@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class MainManager : MonoBehaviour
 {
@@ -15,7 +16,6 @@ public class MainManager : MonoBehaviour
     private int m_Points;
     private bool m_GameOver;
 
-    // Start is called before the first frame update
     private void Start()
     {
         const float step = 0.6f;

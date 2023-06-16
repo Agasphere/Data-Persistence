@@ -716,6 +716,7 @@ GameObject:
   - component: {fileID: 448360675}
   - component: {fileID: 448360674}
   - component: {fileID: 448360673}
+  - component: {fileID: 448360677}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -808,6 +809,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &448360677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 448360672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d497aed0c91bc1744854fd446b42761e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &848283365
 GameObject:
   m_ObjectHideFlags: 0
@@ -1092,7 +1105,7 @@ GameObject:
   - component: {fileID: 929737938}
   - component: {fileID: 929737937}
   m_Layer: 5
-  m_Name: Start
+  m_Name: Start Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1162,7 +1175,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 929737938}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 448360677}
+        m_TargetAssemblyTypeName: MenuUIHandler, Assembly-CSharp
+        m_MethodName: StartSession
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!114 &929737938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1335,7 +1360,7 @@ GameObject:
   - component: {fileID: 1766536032}
   - component: {fileID: 1766536031}
   m_Layer: 5
-  m_Name: Exit
+  m_Name: Exit Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1405,7 +1430,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1766536032}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 448360677}
+        m_TargetAssemblyTypeName: MenuUIHandler, Assembly-CSharp
+        m_MethodName: Exit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1766536032
 MonoBehaviour:
   m_ObjectHideFlags: 0
