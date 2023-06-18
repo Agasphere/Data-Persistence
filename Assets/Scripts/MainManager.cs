@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -5,6 +6,8 @@ using Random = UnityEngine.Random;
 
 public class MainManager : MonoBehaviour
 {
+    public static Action<int> ScoreIncreased;
+    
     public Brick BrickPrefab;
     public int LineCount = 6;
     public Rigidbody Ball;
@@ -61,6 +64,7 @@ public class MainManager : MonoBehaviour
     {
         m_Points += point;
         ScoreText.text = $"Score : {m_Points}";
+        ScoreIncreased?.Invoke(m_Points);
     }
 
     public void GameOver()

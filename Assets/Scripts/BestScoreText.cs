@@ -13,12 +13,12 @@ public class BestScoreText : MonoBehaviour
     
     private void OnEnable()
     {
-        
+        PersistenceManager.NewBestScore += Set;
     }
 
     private void OnDisable()
     {
-        
+        PersistenceManager.NewBestScore -= Set;
     }
     
     private void Set(string playerName, int score)
