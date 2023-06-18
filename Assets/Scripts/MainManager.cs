@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 public class MainManager : MonoBehaviour
 {
     public static Action<int> ScoreIncreased;
+    public static Action GameEnded;
     
     public Brick BrickPrefab;
     public int LineCount = 6;
@@ -53,6 +54,8 @@ public class MainManager : MonoBehaviour
         }
         else if (m_GameOver)
         {
+            GameEnded?.Invoke();
+            
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);

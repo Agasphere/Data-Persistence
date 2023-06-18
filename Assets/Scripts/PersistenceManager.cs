@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -13,12 +14,13 @@ public class PersistenceManager : MonoBehaviour
         public int BestScore;
     }
 
-    public string PlayerName;
-    private int _playerBestScore;
+    private static readonly PlayerData NullData = new() { Name = string.Empty };
+
+    private readonly Queue<PlayerData> _dataToSave = new ();
+
     private static string FilePath => Path.Combine(Application.persistentDataPath, "/savefile.json");
 
     public static Action<string, int> NewBestScore;
-    public static Action<string> LastPlayerLoaded;
 
     private void Awake()
     {
@@ -27,25 +29,33 @@ public class PersistenceManager : MonoBehaviour
         else
             Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        LoadPlayerData();
     }
 
     private void OnEnable()
     {
         MainManager.ScoreIncreased += OnScoreIncreased;
+        MainManager.GameEnded += SavePlayerData;
     }
 
     private void OnDisable()
     {
         MainManager.ScoreIncreased -= OnScoreIncreased;
+        MainManager.GameEnded -= SavePlayerData;
     }
 
     private void OnScoreIncreased(int newScore)
     {
-        var previousBestScore = _playerBestScore;
-        _playerBestScore = Mathf.Max(newScore, _playerBestScore);
+        var currentScore = _dataToSave.Peek().BestScore;
+        if (newScore <= currentScore) return;
 
-        if (_playerBestScore > previousBestScore)
-            NewBestScore?.Invoke(PlayerName, _playerBestScore);
+        if (_dataToSave.Count > 1) 
+            _dataToSave.Dequeue();
+        
+        var data = _dataToSave.Peek();
+        data.BestScore = newScore;
+        NewBestScore?.Invoke(data.Name, data.BestScore);
     }
 
     public bool LoadPlayerData()
@@ -53,27 +63,43 @@ public class PersistenceManager : MonoBehaviour
         var filePath = FilePath;
 
         if (!File.Exists(filePath))
+        {
+            _dataToSave.Enqueue(NullData);
             return false;
+        }
+
         var json = File.ReadAllText(filePath);
-        var data = JsonUtility.FromJson<PlayerData>(json);
-
-        PlayerName = data.Name;
-        _playerBestScore = data.BestScore;
-
-        LastPlayerLoaded?.Invoke(PlayerName);
-        NewBestScore?.Invoke(PlayerName, _playerBestScore);
+        var playerData = JsonUtility.FromJson<PlayerData>(json);
+        _dataToSave.Enqueue(playerData);
 
         return true;
     }
 
     public void SavePlayerData()
     {
-        var data = new PlayerData
-        {
-            Name = PlayerName,
-            BestScore = _playerBestScore
-        };
-        var json = JsonUtility.ToJson(data);
+        var json = JsonUtility.ToJson(_dataToSave.Peek());
         File.WriteAllText(FilePath, json);
+    }
+
+    public void RegisterPlayer(string newPlayer)
+    {
+        var lastPlayer = _dataToSave.Peek();
+        if (newPlayer is null || lastPlayer.Name == newPlayer) 
+            return;
+        
+        if (lastPlayer.Equals(NullData)) 
+            _dataToSave.Dequeue();
+
+        _dataToSave.Enqueue(new PlayerData
+        {
+            Name = newPlayer
+        });
+    }
+
+    public void Deconstruct(out string playerName, out int playerBestScore)
+    {
+        var data = _dataToSave.Peek();
+        playerName = data.Name;
+        playerBestScore = data.BestScore;
     }
 }

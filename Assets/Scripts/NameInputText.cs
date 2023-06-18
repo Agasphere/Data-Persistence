@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 
+[DefaultExecutionOrder(1000)]
 [RequireComponent(typeof(TMP_InputField))]
 public class NameInputText : MonoBehaviour
 {
@@ -9,23 +10,15 @@ public class NameInputText : MonoBehaviour
     private void Awake()
     {
         _inputField = GetComponent<TMP_InputField>();
+        var (playerName, _) = PersistenceManager.Instance;
+        Set(playerName);
     }
 
-    private void OnEnable()
-    {
-        PersistenceManager.LastPlayerLoaded += Set;
-    }
-
-    private void OnDisable()
-    {
-        PersistenceManager.LastPlayerLoaded -= Set;
-    }
-    
     private void Set(string playerName)
     {
         if (playerName is null)
         {
-            Debug.LogWarning("Player's name was null. Name input field text will stay empty");
+            Debug.LogWarning("Player's name was null. Cannot update Name input field text");
             return;
         }
 
