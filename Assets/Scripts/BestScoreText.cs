@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 
+[DefaultExecutionOrder(1000)]
 [RequireComponent(typeof(TMP_Text))]
 public class BestScoreText : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class BestScoreText : MonoBehaviour
     private void Awake()
     {
         _text = GetComponent<TMP_Text>();
+        var (playerName, score) = PersistenceManager.Instance;
+        Set(playerName, score);
     }
     
     private void OnEnable()
@@ -25,7 +28,7 @@ public class BestScoreText : MonoBehaviour
     {
         if (playerName is null)
         {
-            Debug.LogWarning("Player's name was null. Best Score text will stay empty");
+            Debug.LogWarning("Player's name was null. Cannot update Best Score text");
             return;
         }
 
