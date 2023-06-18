@@ -13,19 +13,19 @@ public class NameInputText : MonoBehaviour
 
     private void OnEnable()
     {
-        
+        PersistenceManager.LastPlayerLoaded += Set;
     }
 
     private void OnDisable()
     {
-        
+        PersistenceManager.LastPlayerLoaded -= Set;
     }
     
     private void Set(string playerName)
     {
         if (playerName is null)
         {
-            Debug.LogWarning("Player's name was null. Name Input field text will stay empty");
+            Debug.LogWarning("Player's name was null. Name input field text will stay empty");
             return;
         }
 
